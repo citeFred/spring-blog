@@ -4,7 +4,7 @@ plugins {
     id 'io.spring.dependency-management' version '1.1.3'
 }
 
-group = 'com.example'
+group = 'com.yzpocket'
 version = '0.0.1-SNAPSHOT'
 
 java {
@@ -24,6 +24,20 @@ repositories {
 dependencies {
     // MySQL
     implementation 'mysql:mysql-connector-java:8.0.28'
+    // JPA 구현체인 hibernate
+    implementation 'org.hibernate:hibernate-core:6.1.7.Final'
+    // JPA 구현체의 추상 클래스, 부모인 Spring Boot
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+    // JWT
+    compileOnly group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.5'
+    runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.5'
+    runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.5'
+
+    // Security
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+
+    // JDBC
     implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
 
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'

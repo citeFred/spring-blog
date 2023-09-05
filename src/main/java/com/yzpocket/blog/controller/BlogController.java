@@ -2,52 +2,46 @@ package com.yzpocket.blog.controller;
 
 import com.yzpocket.blog.dto.BlogRequestDto;
 import com.yzpocket.blog.dto.BlogResponseDto;
-import com.yzpocket.blog.entity.Blog;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
-import org.springframework.stereotype.Controller;
+import com.yzpocket.blog.service.BlogService;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.PreparedStatement;
-import java.sql.Statement;
+import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("/api")
 public class BlogController {
-    private final JdbcTemplate jdbcTemplate;
-    public BlogController(JdbcTemplate jdbcTemplate){
-        this.jdbcTemplate = jdbcTemplate;
+    private final BlogService blogService; //*** 약한 결합으로 바꿔준다.
+    public BlogController(BlogService blogService){ //외부에서 주입해야 한다했는데 어디서 누가 주입해줘야 하는것이지?? 메인은 없는데.. -> IoC 컨테이너??? Bean Type이 없다? = Bean이 등록되어야 한다는 소리.
+        this.blogService = blogService;
     }
 
     //Create
-    @PostMapping("/posts")
-    @ResponseBody
-    public BlogResponseDto createBlog(@RequestBody BlogRequestDto requestDto){
-        Blog blog = new Blog(requestDto);
+    @PostMapping("/blog")
+    public BlogResponseDto createBlog(@RequestBody BlogRequestDto requestDto) {
+        return blogService.createBlog(requestDto);
+    }
 
-        // DB 저장
-        KeyHolder keyHolder = new GeneratedKeyHolder(); // 기본 키를 반환받기 위한 객체
+    //Read
+    @GetMapping("/blogs")
+    public List<BlogResponseDto> getBlogs() {
+        return blogService.getBlogs();
+    }
 
-        //String sql DML문장이 실행됨
-        String sql = "INSERT INTO blog (title, author, contents, password) VALUES (?,?,?,?)"; // <---  각각 동적으로 아래 setString으로 결정하게함
-        jdbcTemplate.update( con -> {
-                    PreparedStatement preparedStatement = con.prepareStatement(sql,
-                            Statement.RETURN_GENERATED_KEYS);
+    @GetMapping("/blog/contents")
+    public List<BlogResponseDto> getBlogsByKeyword(String keyword) {
+        return blogService.getBlogsByKeyword(keyword);
+    }
 
-                    preparedStatement.setString(1, blog.getTitle()); // <--- 이것이 title
-                    preparedStatement.setString(2, blog.getAuthor()); // <--- 이것이 author
-                    preparedStatement.setString(3, blog.getContents()); // <--- 이것이 contents
-                    preparedStatement.setString(4, blog.getPassword()); // <--- 이것이 password
-                    return preparedStatement;
-                },
-                keyHolder);
+    //Update
+    @PutMapping("/blog/{id}")
+    public Long updateBlog(@PathVariable Long id, @RequestBody BlogRequestDto requestDto) {
+        return blogService.updateBlog(id, requestDto);
+    }
 
-        // DB Insert 후 받아온 기본키 확인
-        Long idx = keyHolder.getKey().longValue();
-        blog.setIdx(idx);
-
-        BlogResponseDto blogResponseDto = new BlogResponseDto(blog);
-        return blogResponseDto;
+    //Delete
+    @DeleteMapping("/blog/{id}")
+    public Long deleteBlog(@PathVariable Long id) {
+        return blogService.deleteBlog(id);
     }
 }
+
