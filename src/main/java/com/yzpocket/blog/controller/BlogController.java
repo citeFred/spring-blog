@@ -2,7 +2,10 @@ package com.yzpocket.blog.controller;
 
 import com.yzpocket.blog.dto.BlogRequestDto;
 import com.yzpocket.blog.dto.BlogResponseDto;
+import com.yzpocket.blog.entity.Blog;
+import com.yzpocket.blog.entity.User;
 import com.yzpocket.blog.service.BlogService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,8 +22,11 @@ public class BlogController {
 
     // 글 작성
     @PostMapping("/blog")
-    public BlogResponseDto createBlog(@RequestBody BlogRequestDto requestDto) {
-        return blogService.createBlog(requestDto);
+    public BlogResponseDto createBlog(@RequestBody BlogRequestDto requestDto, HttpServletRequest req) {
+        // HttpServletRequest에서 사용자 정보 추출
+        User user = (User) req.getAttribute("user");
+        // 게시글 작성 메소드 호출
+        return blogService.createBlog(requestDto, user.getUsername());
     }
 
     // 글 목록 보기
@@ -29,13 +35,11 @@ public class BlogController {
         return blogService.getBlogs();
     }
 
-    // 아래부터는 타입의 다형성을 이용해보자
-    // <- 성공한 경우 Dto 타입 json객체 반환, 실패한 경우 String jsonResponse 반환하기위해 타입<?> Generic 사용
     // 선택 글 보기
     @GetMapping("/blog/{id}")
-    public ResponseEntity<?> getBlogById(@PathVariable Long id) {
+    public ResponseEntity<?> getOneBlog(@PathVariable Long id) {
         try {
-            BlogResponseDto responseDto = blogService.getBlogById(id);
+            BlogResponseDto responseDto = blogService.getOneBlog(id);
             return ResponseEntity.ok(responseDto);
         } catch (IllegalArgumentException e) {
             String jsonResponse = "{\"msg\": \"" + e.getMessage() + "\", \"statusCode\": 404}";
@@ -43,31 +47,24 @@ public class BlogController {
         }
     }
 
-
     // 선택 글 수정
     @PutMapping("/blog/{id}")
-    public ResponseEntity<?> updateBlog(@PathVariable Long id, @RequestBody BlogRequestDto requestDto) {
-        try {
-            blogService.updateBlog(id, requestDto);
-            String jsonResponse = "{\"msg\": \"글 수정 성공\", \"statusCode\": 200}";
-            return ResponseEntity.ok(jsonResponse);
-        } catch (IllegalArgumentException e) {
-            String jsonResponse = "{\"msg\": \"" + e.getMessage() + "\", \"statusCode\": 404}";
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(jsonResponse);
-        }
+    public Blog updateBlog(@PathVariable Long id, @RequestBody BlogRequestDto requestDto, HttpServletRequest req) {
+        // HttpServletRequest에서 사용자 정보 추출
+        User user = (User) req.getAttribute("user");
+        String username = user.getUsername();
+        // 게시글 수정 메소드 호출
+        return blogService.updateBlog(id, requestDto, username);
     }
 
     // 선택 글 삭제
     @DeleteMapping("/blog/{id}")
-    public ResponseEntity<?> deleteBlog(@PathVariable Long id) {
-        try {
-            blogService.deleteBlog(id);
-            String jsonResponse = "{\"msg\": \"글 삭제 성공\", \"statusCode\": 200}";
-            return ResponseEntity.ok(jsonResponse);
-        } catch (IllegalArgumentException e) {
-            String jsonResponse = "{\"msg\": \"" + e.getMessage() + "\", \"statusCode\": 404}";
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(jsonResponse);
-        }
+    public ResponseEntity<String> deleteBlog(@PathVariable Long id, HttpServletRequest req) {
+        // HttpServletRequest에서 사용자 정보 추출
+        User user = (User) req.getAttribute("user");
+        String username = user.getUsername();
+        // 게시글 삭제 메소드 호출
+        return blogService.deleteBlog(id, username);
     }
 }
 

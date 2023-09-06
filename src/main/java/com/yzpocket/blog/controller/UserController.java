@@ -15,27 +15,11 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     private final UserService userService;
 
-    //redirect문제가생겨서 잠시 로거사용 -> troubleshooting
-    // -> Application의 @SpringBootApplication에서 -> (exclude = SecurityAutoConfiguration.class)를 기입 안해서
-    // -> 자동적으로 Spring Security가 3개의 필수 요소가 없어서 Auto Configuration 으로 계속 인증요청하던것이었음..
-    // -> Security 적용 시 어떤 부분인지 확인할것.
-    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
+    //private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     public UserController(UserService userService) {
         this.userService = userService;
     }
-
-    // 회원가입 뷰페이지 반환(현재사용X) ->@Controller때 사용
-    //@GetMapping("/user/signup")
-    //public String signupPage() {
-    //    return "signup";
-    //}
-
-    // 로그인 뷰페이지 반환(현재사용X) ->@Controller때 사용
-    //@GetMapping("/user/login-page")
-    //public String loginPage(){
-    //    return "login";
-    //}
 
     // 회원가입 API
     @PostMapping("/user/signup")
@@ -44,33 +28,28 @@ public class UserController {
             userService.signup(requestDto);
             String jsonResponse = "{\"msg\": \"회원가입 성공\", \"statusCode\": 200}";
             return ResponseEntity.ok(jsonResponse);
-            // 성공시 뷰페이지 반환 필요시
-            //return "redirect:/api/user/signup-page";
+
         } catch (Exception e) {
             e.printStackTrace();
             String jsonResponse = "{\"msg\": \"회원가입 실패\", \"statusCode\": 400}";
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(jsonResponse);
-            // 예외 시 재가입 페이지 반환 필요시
-            //return "redirect:/api/user/signup-page?error";
+
         }
     }
 
     // 로그인 API
     @PostMapping("/user/login")
     public ResponseEntity<String> login(@RequestBody LoginRequestDto requestDto, HttpServletResponse res) {
-        String jsonResponse = "";
         try {
             userService.login(requestDto, res);
-            jsonResponse = "{\"msg\": \"로그인 성공\", \"statusCode\": 200}";
+            String jsonResponse = "{\"msg\": \"로그인 성공\", \"statusCode\": 200}";
             return ResponseEntity.ok(jsonResponse);
-            // 성공시 뷰페이지 반환 필요시
-            //return "redirect:/";
+
         }catch (Exception e){
             e.printStackTrace();
-            jsonResponse = "{\"msg\": \"로그인 실패\", \"statusCode\": 400}";
+            String jsonResponse = "{\"msg\": \"로그인 실패\", \"statusCode\": 400}";
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(jsonResponse);
-            // 예외 시 재로그인 페이지 반환 필요시
-            //return "redirect:/api/user/login-page?error";
+
         }
     }
 }

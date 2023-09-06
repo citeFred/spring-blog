@@ -6,22 +6,29 @@ import lombok.Getter;
 import java.time.LocalDateTime;
 
 @Getter
-public class BlogResponseDto {
+public class BlogResponseDto { // response Dto
     private Long id;
+    private String username;
     private String title;
-    private String author;
     private String contents;
-    private LocalDateTime createAt;
+    private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
-    private String password;
 
     public BlogResponseDto(Blog blog) {
         this.id = blog.getId();
+        this.username = blog.getUsername();
         this.title = blog.getTitle();
-        this.author = blog.getAuthor();
         this.contents = blog.getContents();
-        this.createAt = blog.getCreatedAt();
+        this.createdAt = blog.getCreatedAt();
         this.modifiedAt = blog.getModifiedAt();
-        this.password = blog.getPassword();
+    }
+    public BlogResponseDto(String username,String title, String contents, LocalDateTime createdAt) {
+        this.username = username;
+        this.title = title;
+        this.contents = contents;
+        this.createdAt = createdAt;
+    }
+    public static BlogResponseDto fromBlog(Blog blog) { // 필요한 정보만 내보내기
+        return new BlogResponseDto(blog.getUsername(), blog.getTitle(), blog.getContents(), blog.getCreatedAt());
     }
 }

@@ -1,13 +1,11 @@
 package com.yzpocket.blog.dto;
 
 import lombok.Getter;
-import lombok.Setter;
 
-@Setter
+
 @Getter
-public class BlogRequestDto {
+public class BlogRequestDto { // 정보주는 Dto
     private String title;
-    private String author;
+    private String username;
     private String contents;
-    private String password;
 }

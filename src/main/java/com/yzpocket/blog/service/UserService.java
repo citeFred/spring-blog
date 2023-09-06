@@ -28,8 +28,9 @@ public class UserService {
 
     // ADMIN_TOKEN -> ADMIN인지 USER인지 판별
     private final String ADMIN_TOKEN = "AAABnvxRVklrnYxKZ0aHgTBcXukeZygoC"; // 가상의 관리자키 -> 더복잡한데 여기선 임시값으로 썼음 -> 어떤 과정을쓸까?
-    private static final Pattern USERNAME_PATTERN = Pattern.compile("^[a-z0-9]{4,10}$");
-    private static final Pattern PASSWORD_PATTERN = Pattern.compile("^[a-zA-Z0-9]{8,15}$");
+    private static final Pattern USERNAME_PATTERN = Pattern.compile("^[a-z0-9]{4,10}$"); //아이디는 소문자 알파벳 및 숫자로 구성되어 있어야 하며, 길이는 4자 이상 10자 이하로 설정
+    private static final Pattern PASSWORD_PATTERN = Pattern.compile("^[a-zA-Z0-9]{8,15}$"); //비밀번호는 대문자 및 소문자 알파벳, 숫자로 구성되어 있어야 하며, 길이는 8자 이상 15자 이하로 설정
+
     public static boolean isValidUsername(String username) {
         return USERNAME_PATTERN.matcher(username).matches();
     }

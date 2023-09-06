@@ -17,29 +17,33 @@ public class Blog extends Timestamped {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id; // 글번호
 
+    @Column(name = "username", nullable = false)
+    private String username; //사용자이름
+
     @Column(name = "title", nullable = false)
     private String title; //글제목
-
-    @Column(name = "author", nullable = false)
-    private String author; //작성자
 
     @Column(name = "contents", nullable = false, columnDefinition = "TEXT") //<- text로!
     private String contents; //글내용
 
-    @Column(name = "password", nullable = false)
-    private String password; //글비밀번호
 
-    public Blog(BlogRequestDto requestDto){
+
+    public Blog(BlogRequestDto requestDto, String tokenUsername) {
         this.title = requestDto.getTitle();
-        this.author = requestDto.getAuthor();
         this.contents = requestDto.getContents();
-        this.password = requestDto.getPassword();
+        this.username = tokenUsername; // 사용자 이름 설정
     }
-    public void update(BlogRequestDto requestDto){
+
+    public void update(BlogRequestDto requestDto) {
+        this.username = requestDto.getUsername();
         this.title = requestDto.getTitle();
-        this.author = requestDto.getAuthor();
         this.contents = requestDto.getContents();
-        this.password = requestDto.getPassword();
+    }
+
+    public void update(BlogRequestDto requestDto, String username){
+        this.username = username;
+        this.title = requestDto.getTitle();
+        this.contents = requestDto.getContents();
     }
     //public String getPassword(BlogRequestDto requestDto){
     //    this.password = requestDto.getPassword();
