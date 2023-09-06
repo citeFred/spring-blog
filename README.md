@@ -1,4 +1,4 @@
-# Spring Boot Pair Practice!
+# Spring Boot Practice!
 [Spring] 블로그 백엔드 서버 만들기
 
 ## 🖥️ 저장소 소개
@@ -32,12 +32,47 @@ Spring Boot 를 활용한 회원가입, 로그인, 게시글 쓰기, 수정, 삭
 ## ⚠️ 주의
 #### 추적 예외
 * src/main/resources/application.properties 파일은 DB 접속 정보가 있어 추적이 제외되어 있습니다.
-* 테스트를 진행 하시려면 위 경로와 파일(application.properties)을 생성해주세요.
-- 다음과 코드를 입력해주세요 < ... > 부분을 작성해주셔야 합니다. "<", ">" 괄호도 제거되어야 합니다.
-- ex) spring.datasource.username=roots
+* MySQL을 연결 한 뒤 'blog' 이름의 DATABASE를 생성해 주셔야 합니다.
 ```
+create database blog;
+use blog;
+create table blog
+(
+    id          bigint auto_increment
+        primary key,
+    created_at  datetime(6)  null,
+    modified_at datetime(6)  null,
+    contents    varchar(255) not null,
+    author      varchar(255) not null,
+    password    varchar(255) not null,
+    title       varchar(255) not null
+);
+
+create table users
+(
+    username varchar(255) not null
+        primary key,
+    password varchar(255) not null
+);
+```
+* 테스트를 진행 하시려면 위 경로 src/main/resources/ 에 파일(application.properties)을 생성해주세요.
+  - 다음과 코드를 입력해주세요 < ... > 부분을 작성해주셔야 합니다. "<", ">" 괄호 제거해주세요.
+  - ex) spring.datasource.username=roots
+  - <Secret Key> 는 로컬 테스트용으로 임시 적용하고 있습니다. 원하는 난수를 입력해주세요 ex) adsfa19aaAd91
+```
+#JDBC
 spring.datasource.url=jdbc:mysql://localhost:3306/blog
-spring.datasource.username=<USERNAME>
-spring.datasource.password=<PASSWORD>
+spring.datasource.username=<username>
+spring.datasource.password=<password>
 spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+
+#JPA
+spring.jpa.hibernate.ddl-auto=update
+## Options : create, create-drop, validate, none
+spring.jpa.properties.hibernate.show_sql=true
+spring.jpa.properties.hibernate.format_sql=true
+spring.jpa.properties.hibernate.use_sql_comments=true
+
+#JWT
+jwt.secret.key=<Secret Key>
 ```
