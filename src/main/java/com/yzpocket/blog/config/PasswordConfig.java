@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-@Configuration //<-- 스프링서버가 IoC Container에 등록 해줌
+@Configuration //<-- 스프링서버가 IoC Container에 Bean 등록 해줌
 public class PasswordConfig { //passwordConfig
 
     @Bean
