@@ -20,8 +20,8 @@ public class Blog extends Timestamped {
     @Column(name = "title", nullable = false)
     private String title; //글제목
 
-    @Column(name = "name", nullable = false)
-    private String name; //작성자
+    @Column(name = "author", nullable = false)
+    private String author; //작성자
 
     @Column(name = "contents", nullable = false)
     private String contents; //글내용
@@ -31,14 +31,18 @@ public class Blog extends Timestamped {
 
     public Blog(BlogRequestDto requestDto){
         this.title = requestDto.getTitle();
-        this.name = requestDto.getName();
+        this.author = requestDto.getAuthor();
         this.contents = requestDto.getContents();
         this.password = requestDto.getPassword();
     }
     public void update(BlogRequestDto requestDto){
         this.title = requestDto.getTitle();
-        this.name = requestDto.getName();
+        this.author = requestDto.getAuthor();
         this.contents = requestDto.getContents();
         this.password = requestDto.getPassword();
     }
+    //public String getPassword(BlogRequestDto requestDto){
+    //    this.password = requestDto.getPassword();
+    //    return password;
+    //}
 }
