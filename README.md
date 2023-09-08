@@ -9,14 +9,14 @@
 * 2주차 과제 리뷰 -> https://ohnyong.notion.site/Lv-2-bb787094ac8141c9a88eaa15334ec7bf?pvs=4
 * 추가중..
 
-### 👋🏻 Contact
+## 👋🏻 Contact
 - **Email** : citefred@yzpocket.com
 - **Blog** : https://www.citefred.com
 
 ## 🕰️ 학습 기간
 * 23.08.29 ~ 23.09.14
 
-### ⚙️ 개발 환경
+## ⚙️ 개발 환경
 - **MainLanguage** : `Java - JDK 17`
 - **IDE** : `IntelliJ IDEA Ultimate`
 - **Framework** : `SpringBoot`
@@ -25,7 +25,7 @@
 - **TEST** : `POSTMAN API Request`
 
 ## 📌 주요 기능
-#### 학습한 기능
+### 학습한 기능
 * 회원 부분
     - 회원가입
     - 로그인
