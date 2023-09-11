@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.regex.Pattern;
+
 @RestController
 @RequestMapping("/api")
 public class UserController {
@@ -25,6 +27,20 @@ public class UserController {
     @PostMapping("/user/signup")
     public ResponseEntity<String> signup(@RequestBody SignupRequestDto requestDto) {
         try {
+            String username = requestDto.getUsername();
+            String password = requestDto.getPassword();
+
+            // 아이디와 비밀번호의 유효성 검사 호출 계층을 (Service->Controller로 옮김)
+            if (!userService.isValidUsername(username)) { // <- UserService의 유효성검사 중복제거용 메소드를 호출
+                String jsonResponse = "{\"msg\": \"ID 형태가 부적절합니다.\", \"statusCode\": 400}";
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(jsonResponse);
+            }
+
+            if (!userService.isValidPassword(password)) { // <- UserService의 유효성검사 중복제거용 메소드를 호출
+                String jsonResponse = "{\"msg\": \"PW 형태가 부적절합니다.\", \"statusCode\": 400}";
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(jsonResponse);
+            }
+
             userService.signup(requestDto);
             String jsonResponse = "{\"msg\": \"회원가입 성공\", \"statusCode\": 200}";
             return ResponseEntity.ok(jsonResponse);
@@ -33,7 +49,6 @@ public class UserController {
             e.printStackTrace();
             String jsonResponse = "{\"msg\": \"회원가입 실패\", \"statusCode\": 400}";
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(jsonResponse);
-
         }
     }
 
@@ -41,15 +56,29 @@ public class UserController {
     @PostMapping("/user/login")
     public ResponseEntity<String> login(@RequestBody LoginRequestDto requestDto, HttpServletResponse res) {
         try {
+            String username = requestDto.getUsername();
+            String password = requestDto.getPassword();
+
+            // 아이디와 비밀번호의 유효성 검사 호출 계층을 (Service->Controller로 옮김)
+            if (!userService.isValidUsername(username)) { // "
+                String jsonResponse = "{\"msg\": \"ID 형태가 부적절합니다.\", \"statusCode\": 400}";
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(jsonResponse);
+            }
+
+            // 아이디와 비밀번호의 유효성 검사 호출 계층을 (Service->Controller로 옮김)
+            if (!userService.isValidPassword(password)) { // "
+                String jsonResponse = "{\"msg\": \"PW 형태가 부적절합니다.\", \"statusCode\": 400}";
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(jsonResponse);
+            }
+
             userService.login(requestDto, res);
             String jsonResponse = "{\"msg\": \"로그인 성공\", \"statusCode\": 200}";
             return ResponseEntity.ok(jsonResponse);
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             String jsonResponse = "{\"msg\": \"로그인 실패\", \"statusCode\": 400}";
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(jsonResponse);
-
         }
     }
 }

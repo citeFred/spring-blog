@@ -14,7 +14,7 @@ import org.springframework.util.StringUtils;
 import java.io.IOException;
 
 @Slf4j(topic = "AuthFilter")
-@Component
+//@Component
 @Order(2)
 public class AuthFilter implements Filter {
 
@@ -36,7 +36,7 @@ public class AuthFilter implements Filter {
         String url = httpServletRequest.getRequestURI();
         String urlMethod = httpServletRequest.getMethod();
 
-        // 로그인 API 요청에 대해 인증 절차를 건너뜀
+        // 로그인 API 요청에 대해 인증 절차를 건너뜀 -> WebSecurityConfig로 인해 이부분들이 필요없어질것임
         if (StringUtils.hasText(url) && (url.startsWith("/api/user")||"GET".equals(urlMethod))) { // 로그인 + 회원가입 필터 우회
             chain.doFilter(request, response); // 인증없이 다음 Filter 또는 대상 Servlet/JSP로 요청 전달
         } else {

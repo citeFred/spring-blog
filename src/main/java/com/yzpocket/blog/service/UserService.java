@@ -31,10 +31,13 @@ public class UserService {
     private static final Pattern USERNAME_PATTERN = Pattern.compile("^[a-z0-9]{4,10}$"); //아이디는 소문자 알파벳 및 숫자로 구성되어 있어야 하며, 길이는 4자 이상 10자 이하로 설정
     private static final Pattern PASSWORD_PATTERN = Pattern.compile("^[a-zA-Z0-9]{8,15}$"); //비밀번호는 대문자 및 소문자 알파벳, 숫자로 구성되어 있어야 하며, 길이는 8자 이상 15자 이하로 설정
 
-    public static boolean isValidUsername(String username) {
+    // 유효성검사 메소드 - 이름
+    public boolean isValidUsername(String username) {
         return USERNAME_PATTERN.matcher(username).matches();
     }
-    public static boolean isValidPassword(String password) {
+
+    // 유효성검사 메소드 - 비밀번호
+    public boolean isValidPassword(String password) {
         return PASSWORD_PATTERN.matcher(password).matches();
     }
 
@@ -52,9 +55,9 @@ public class UserService {
         // 비밀번호 기초 유효성검사, 암호화
         if (!isValidPassword(password)) {
             throw new IllegalArgumentException("PW 형태가 부적절합니다.");
-        }else {
-            password = passwordEncoder.encode(password); //인코더로 암호화해서 할당 정보통신보호법에따라 꼭해줘야함
-        }
+        } //불필요한 else 제거
+        password = passwordEncoder.encode(password); //인코더로 암호화해서 할당 정보통신보호법에따라 꼭해줘야함
+
         // 아이디(회원이름) 기초 유효성검사
         if (!isValidUsername(username)) {
             throw new IllegalArgumentException("ID 형태가 부적절합니다.");
