@@ -5,6 +5,7 @@ import com.yzpocket.blog.dto.BlogResponseDto;
 import com.yzpocket.blog.entity.Blog;
 import com.yzpocket.blog.repository.BlogRepository;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -13,12 +14,9 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class BlogService {
     private final BlogRepository blogRepository; // <- Blog 타입으로 SimpleRepository 구현체 객체가 들어옴
-
-    public BlogService(BlogRepository blogRepository) {
-        this.blogRepository = blogRepository;
-    }
 
     public BlogResponseDto createBlog(BlogRequestDto requestDto, String username) {
         // RequestDto -> Entity

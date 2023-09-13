@@ -6,6 +6,7 @@ import com.yzpocket.blog.repository.UserRepository;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -15,18 +16,13 @@ import java.io.IOException;
 
 @Slf4j(topic = "AuthFilter")
 @Component
+@RequiredArgsConstructor
 @Order(2)
 public class AuthFilter implements Filter {
 
     // 사용자 정보를 관리하는 저장소와 JWT 토큰 관련 기능을 제공하는 유틸리티 클래스를 멤버 변수로 선언
     private final UserRepository userRepository;
     private final JwtUtil jwtUtil;
-
-    // 생성자를 통해 UserRepository와 JwtUtil 객체를 주입받음
-    public AuthFilter(UserRepository userRepository, JwtUtil jwtUtil) {
-        this.userRepository = userRepository;
-        this.jwtUtil = jwtUtil;
-    }
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException, IOException {
