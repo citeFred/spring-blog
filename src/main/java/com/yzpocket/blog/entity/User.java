@@ -1,9 +1,6 @@
 package com.yzpocket.blog.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,16 +12,19 @@ import lombok.Setter;
 @NoArgsConstructor
 public class User {
     @Id
+    @Column(nullable = false, unique = true)
     private String username; // 회원이름
+
     @Column(nullable = false)
     private String password; // 회원비밀번호
 
-    //@Coluem(nullable = false)
-    //@Enumberated(value = EnumType.STRING) //<- Enum 타입의 데이터를 저장 할때 필요, Enum의 이름자체를 저장(ex:"ADMIN", "USER") role 구현 참고
-    //private UserRoleEnum role;
+    @Column(nullable = false)
+    @Enumerated(value = EnumType.STRING) //<- Enum 타입의 데이터를 저장 할때 필요, Enum의 이름자체를 저장(ex:"ADMIN", "USER") role 구현 참고
+    private UserRoleEnum role;
 
-    public User(String username, String password) {
+    public User(String username, String password, UserRoleEnum role) {
         this.username = username;
         this.password = password;
+        this.role = role;
     }
 }

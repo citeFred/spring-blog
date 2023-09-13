@@ -1,5 +1,6 @@
 package com.yzpocket.blog.jwt;
 
+import com.yzpocket.blog.entity.UserRoleEnum;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
@@ -59,13 +60,13 @@ public class JwtUtil {
 
     // ----------------------------------------------- [1] JWT 생성 -----------------------------------------------
     // 토큰 생성
-    public String createToken(String username) { //<- 토큰 생성자 에서 username과 권한 매개변수를 필요로함, 호출 시 username, 권한명을 인자로 넘겨주면됨
+    public String createToken(String username, UserRoleEnum role) { //<- 토큰 생성자 에서 username과 권한 매개변수를 필요로함, 호출 시 username, 권한명을 인자로 넘겨주면됨
         Date date = new Date();
 
         return BEARER_PREFIX + //아까 Value 앞에 붙게되는 식별자 컨벤션 "Bearer " 같은것이 붙게되고 이후 value값이 붙게됨
                 Jwts.builder() //아래 Jwt 토큰을 만드는 메소드에 맞는 각 항목들을 생성하면서 암호화를 진행함. 필요한 정보는 아래 항목을 조절하면 되는것임
                         .setSubject(username) // 사용자 식별자값(ID)
-                        //.claim(AUTHORIZATION_KEY, role) // 사용자 권한
+                        .claim(AUTHORIZATION_KEY, role) // 사용자 권한
                         .setExpiration(new Date(date.getTime() + TOKEN_TIME)) // 만료 시간
                         .setIssuedAt(date) // 발급일
                         .signWith(key, signatureAlgorithm) // 암호화 알고리즘

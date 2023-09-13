@@ -8,6 +8,6 @@ import lombok.Setter;
 public class SignupRequestDto {
     private String username;
     private String password;
-    //private boolean admin = false; //아직미구현
-    //private String adminToken = ""; //아직미구현
+    private boolean isAdmin = false; //아직미구현
+    private String adminToken = ""; //아직미구현
 }
