@@ -6,6 +6,7 @@ import com.yzpocket.blog.entity.User;
 import com.yzpocket.blog.jwt.JwtUtil;
 import com.yzpocket.blog.repository.UserRepository;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -13,20 +14,14 @@ import java.util.Optional;
 import java.util.regex.Pattern;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
 
     private final UserRepository userRepository; // Bean DI
     private final PasswordEncoder passwordEncoder; // Bean DI
     private final JwtUtil jwtUtil; // Bean DI
-    //위 주입문 없에려면 클래스에 @RequiredArgsConstructor 로 통일
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtUtil jwtUtil) {
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.jwtUtil = jwtUtil;
-    }
-
-    // ADMIN_TOKEN -> ADMIN인지 USER인지 판별
+    // ADMIN_TOKEN -> ADMIN가입시 필요한것
     private final String ADMIN_TOKEN = "AAABnvxRVklrnYxKZ0aHgTBcXukeZygoC"; // 가상의 관리자키 -> 더복잡한데 여기선 임시값으로 썼음 -> 어떤 과정을쓸까?
     private static final Pattern USERNAME_PATTERN = Pattern.compile("^[a-z0-9]{4,10}$"); //아이디는 소문자 알파벳 및 숫자로 구성되어 있어야 하며, 길이는 4자 이상 10자 이하로 설정
     private static final Pattern PASSWORD_PATTERN = Pattern.compile("^[a-zA-Z0-9]{8,15}$"); //비밀번호는 대문자 및 소문자 알파벳, 숫자로 구성되어 있어야 하며, 길이는 8자 이상 15자 이하로 설정
@@ -63,7 +58,7 @@ public class UserService {
             throw new IllegalArgumentException("ID 형태가 부적절합니다.");
         }
         /* email 중복확인, 사용자 유형 role 확인 추가 시
-        * 해당 추가 기능은 한번 구현해보자 회원 중복 확인과 유사한 원리다. 햇갈리면 1-7 회원가입구현 22분부터 참고 해볼 것.*/
+         * 해당 추가 기능은 한번 구현해보자 회원 중복 확인과 유사한 원리다. 햇갈리면 1-7 회원가입구현 22분부터 참고 해볼 것.*/
 
         // 사용자 등록
         User user = new User(username, password); //db row는 entity객체다
