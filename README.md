@@ -2,18 +2,25 @@
 [Spring] 블로그 백엔드 서버 만들기
 
 ## 🖥️ 저장소 소개
-Spring Boot 를 활용한 회원가입, 로그인, 게시글 쓰기, 수정, 삭제, 조회 API를 구현해보는 연습 프로젝트 저장소 입니다.
-
+Spring Boot 를 활용한 회원가입, 로그인, 게시글 쓰기, 수정, 삭제, 조회, 댓글 등 API를 구현해보는 연습 프로젝트 저장소 입니다.
 ## 🕰️ 학습 기간
 * 23.08.29 ~ 23.09.14
+* 1주차 https://ohnyong.notion.site/Lv-1-cbd646bdc47a40ea90fe348ff2b8242f?pvs=4
+* 2주차 https://ohnyong.notion.site/Lv-2-bb787094ac8141c9a88eaa15334ec7bf?pvs=4
+* 3주차 https://ohnyong.notion.site/Lv-3-94fd777a224f4854b38550dabde79082?pvs=4
+* 
 
 ### ⚙️ 개발 환경
-- **MainLanguage** : `Java` - JDK 17
-- **IDE** : IntelliJ IDEA Ultimate
-- **Framework** : SpringBoot
-- **Database** : MySQL
-- **SERVER** : Spring Inner Server(TOMCAT) 
-- **TEST** : POSTMAN API Request 
+- **MainLanguage** : `Java - JDK 17`
+- **IDE** : `IntelliJ IDEA Ultimate`
+- **Framework** : `SpringBoot`
+- **Database** : `MySQL`
+- **SERVER** : `Spring Inner Server(TOMCAT)` 
+- **TEST** : `POSTMAN API Request` 
+
+## 👋🏻 Contact
+- **Email** : citefred@yzpocket.com
+- **Blog** : https://www.citefred.com
 
 ## 📌 주요 기능
 #### 학습한 기능
@@ -27,7 +34,12 @@ Spring Boot 를 활용한 회원가입, 로그인, 게시글 쓰기, 수정, 삭
     - 게시글 선택 수정
     - 게시글 선택 삭제
 
-* 추가중..
+* 댓글 기능
+    - 댓글 작성
+    - 댓글 수정
+    - 댓글 삭제
+
+* 추가중…
 
 ## ⚠️ 주의
 #### 추적 예외
@@ -35,25 +47,6 @@ Spring Boot 를 활용한 회원가입, 로그인, 게시글 쓰기, 수정, 삭
 * MySQL을 연결 한 뒤 'blog' 이름의 DATABASE를 생성해 주셔야 합니다.
 ```
 create database blog;
-use blog;
-create table blog
-(
-    id          bigint auto_increment
-        primary key,
-    created_at  datetime(6)  null,
-    modified_at datetime(6)  null,
-    contents    varchar(255) not null,
-    author      varchar(255) not null,
-    password    varchar(255) not null,
-    title       varchar(255) not null
-);
-
-create table users
-(
-    username varchar(255) not null
-        primary key,
-    password varchar(255) not null
-);
 ```
 * 테스트를 진행 하시려면 위 경로 src/main/resources/ 에 파일(application.properties)을 생성해주세요.
   - 다음과 코드를 입력해주세요 < ... > 부분을 작성해주셔야 합니다. "<", ">" 괄호 제거해주세요.
