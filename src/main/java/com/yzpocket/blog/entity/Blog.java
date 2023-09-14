@@ -34,19 +34,9 @@ public class Blog extends Timestamped {
         this.username = tokenUsername; // 사용자 이름 설정
     }
 
-    public void update(BlogRequestDto requestDto) {
-        this.username = requestDto.getUsername();
-        this.title = requestDto.getTitle();
-        this.contents = requestDto.getContents();
-    }
-
     public void update(BlogRequestDto requestDto, String username){
         this.username = username;
         this.title = requestDto.getTitle();
         this.contents = requestDto.getContents();
     }
-    //public String getPassword(BlogRequestDto requestDto){
-    //    this.password = requestDto.getPassword();
-    //    return password;
-    //}
 }
