@@ -6,6 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity // JPA가 관리할 수 있는 Entity 클래스 지정
 @Getter
 @Setter
@@ -27,7 +30,6 @@ public class Blog extends Timestamped {
     private String contents; //글내용
 
 
-
     public Blog(BlogRequestDto requestDto, String tokenUsername) {
         this.title = requestDto.getTitle();
         this.contents = requestDto.getContents();
@@ -39,4 +41,9 @@ public class Blog extends Timestamped {
         this.title = requestDto.getTitle();
         this.contents = requestDto.getContents();
     }
+
+    // Blog:Comment = 1:N
+    // Blog를 삭제할 때 연관된 Comment들도 모두 삭제된다.
+    @OneToMany(mappedBy = "blog", orphanRemoval = true) // Comment의 blog 참조변수에 맵핑, cascade 말고 orphanRemoval = true로 모 엔티티와 관계가 끊어진 자식 엔티티를 자동으로 삭제
+    private List<Comment> comments = new ArrayList<>();
 }
