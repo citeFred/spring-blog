@@ -74,35 +74,47 @@ public class JwtUtil {
     }
     // -----------------------------------------------------------------------------------------------------------
 
+    // ----------------------------------------------- [2] 생성된 JWT를 header에서 가져오는 방식 --------------------------------------
 
-    // ----------------------------------------------- [2] 생성된 JWT를 Cookie에 저장 -----------------------------------------------
-    // JWT Cookie 에 저장
-    public void addJwtToCookie(String token, HttpServletResponse res) {
-        try {
-            token = URLEncoder.encode(token, "utf-8").replaceAll("\\+", "%20"); // Cookie Value 에는 공백이 불가능해서 encoding 진행
-
-            Cookie cookie = new Cookie(AUTHORIZATION_HEADER, token); // Name-Value
-            cookie.setPath("/");
-
-            // Response 객체에 Cookie 추가
-            res.addCookie(cookie);
-        } catch (UnsupportedEncodingException e) {
-            logger.error(e.getMessage());
+    // header 에서 JWT 가져오기
+    public String getJwtFromHeader(HttpServletRequest request) {
+        String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_PREFIX)) {
+            return bearerToken.substring(7);
         }
+        return null;
     }
+
+    // --------------------------------------------------------------------------------------------------------------------------------
+
+    // ----------------------------------------------- [2] 생성된 JWT를 Cookie에 저장하는 방식 -----------------------------------------------
+    //// JWT Cookie 에 저장
+    //public void addJwtToCookie(String token, HttpServletResponse res) {
+    //    try {
+    //        token = URLEncoder.encode(token, "utf-8").replaceAll("\\+", "%20"); // Cookie Value 에는 공백이 불가능해서 encoding 진행
+    //
+    //        Cookie cookie = new Cookie(AUTHORIZATION_HEADER, token); // Name-Value
+    //        cookie.setPath("/");
+    //
+    //        // Response 객체에 Cookie 추가
+    //        res.addCookie(cookie);
+    //    } catch (UnsupportedEncodingException e) {
+    //        logger.error(e.getMessage());
+    //    }
+    //}
     // ---------------------------------------------------------------------------------------------------------------------------------
 
 
     // ----------------------------------------------- [3] Cookie에 들어있던 JWT 토큰을 Substring -----------------------------------------------
-    // 토큰에 "Bearer " 같은 값이 함께 들어와있기 때문에 이런 문자열은 제거해줘야 읽을 수 있기 때문에 잘라내야함
-    // JWT 토큰 substring
-    public String substringToken(String tokenValue) {
-        if (StringUtils.hasText(tokenValue) && tokenValue.startsWith(BEARER_PREFIX)) {
-            return tokenValue.substring(7); // <- "Bearer " 가 7자리라서 없에려고
-        }
-        logger.error("Not Found Token");
-        throw new NullPointerException("Not Found Token");
-    }
+    //// 토큰에 "Bearer " 같은 값이 함께 들어와있기 때문에 이런 문자열은 제거해줘야 읽을 수 있기 때문에 잘라내야함
+    //// JWT 토큰 substring
+    //public String substringToken(String tokenValue) {
+    //    if (StringUtils.hasText(tokenValue) && tokenValue.startsWith(BEARER_PREFIX)) {
+    //        return tokenValue.substring(7); // <- "Bearer " 가 7자리라서 없에려고
+    //    }
+    //    logger.error("Not Found Token");
+    //    throw new NullPointerException("Not Found Token");
+    //}
     // ---------------------------------------------------------------------------------------------------------------------------------
 
 
@@ -132,21 +144,22 @@ public class JwtUtil {
         return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
     }
 
-    public String getTokenFromRequest(HttpServletRequest req) {
-        Cookie[] cookies = req.getCookies();
-        if(cookies != null) {
-            for (Cookie cookie : cookies) {
-                if (cookie.getName().equals(AUTHORIZATION_HEADER)) {
-                    try {
-                        return URLDecoder.decode(cookie.getValue(), "UTF-8"); // Encode 되어 넘어간 Value 다시 Decode
-                    } catch (UnsupportedEncodingException e) {
-                        return null;
-                    }
-                }
-            }
-        }
-        return null;
-    }
+    //// 쿠키에서 사용자 정보 가져오기
+    //public String getTokenFromRequest(HttpServletRequest req) {
+    //    Cookie[] cookies = req.getCookies();
+    //    if(cookies != null) {
+    //        for (Cookie cookie : cookies) {
+    //            if (cookie.getName().equals(AUTHORIZATION_HEADER)) {
+    //                try {
+    //                    return URLDecoder.decode(cookie.getValue(), "UTF-8"); // Encode 되어 넘어간 Value 다시 Decode
+    //                } catch (UnsupportedEncodingException e) {
+    //                    return null;
+    //                }
+    //            }
+    //        }
+    //    }
+    //    return null;
+    //}
     // ---------------------------------------------------------------------------------------------------------------------------------
 
 }

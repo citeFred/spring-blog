@@ -21,6 +21,7 @@ public interface CommentRepository extends JpaRepository<Comment, Long> { // Jpa
      * @param blogId 게시글 번호
      * @return 댓글 목록
      */
-    List<Comment> findAllByBlogIdOrderById(Long blogId); // 필요한 정보만 가져오도록 함
+    //List<Comment> findAllByBlogIdOrderById(Long blogId); // 필요한 정보만 가져오도록 함
+    void delete(Comment comment);
 
 }

@@ -30,18 +30,18 @@ public class UserService {
 
     // 회원가입 기능
     public void signup(SignupRequestDto requestDto) {
-        String username = requestDto.getUsername();
+        String userId = requestDto.getUserId();
         String password = requestDto.getPassword();
         Boolean isAdmin = requestDto.isAdmin();
         String adminToken = requestDto.getAdminToken();
 
         // 회원 중복 확인
-        if (userRepository.findByUsername(username).isPresent()) {
+        if (userRepository.findByUsername(userId).isPresent()) {
             throw new IllegalArgumentException("중복된 사용자가 존재합니다.");
         }
 
         // 아이디(회원이름) 유효성검사
-        if (!isValidUsername(username)) {
+        if (!isValidUsername(userId)) {
             throw new IllegalArgumentException("ID 형태가 부적절합니다.");
         }
 
@@ -63,29 +63,30 @@ public class UserService {
         }
 
         // 사용자 등록
-        User user = new User(username, password, role);
+        String username = requestDto.getUsername();
+        User user = new User(userId ,username, password, role);
         userRepository.save(user);
     }
 
 
-    // 로그인 기능
-    public void login(LoginRequestDto requestDto, HttpServletResponse res) {
-        String username = requestDto.getUsername();
-        String password = requestDto.getPassword();
-
-        //사용자 존재 확인
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new IllegalArgumentException("등록된 사용자가 없습니다."));
-
-        //비밀번호 일치 여부 확인
-        if (!passwordEncoder.matches(password, user.getPassword())) {
-            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
-        }
-
-        // 인증 성공 시 JWT 생성 및 쿠키에 저장
-        String token = jwtUtil.createToken(user.getUsername(), user.getRole());
-        jwtUtil.addJwtToCookie(token, res);
-    }
+    // 로그인 기능 -> Spring Security 적용으로 필요없어짐 -> LoginForm이 함.
+    //public void login(LoginRequestDto requestDto, HttpServletResponse res) {
+    //    String userId = requestDto.getUserId();
+    //    String password = requestDto.getPassword();
+    //
+    //    //사용자 존재 확인
+    //    User user = userRepository.findByUsername(username)
+    //            .orElseThrow(() -> new IllegalArgumentException("등록된 사용자가 없습니다."));
+    //
+    //    //비밀번호 일치 여부 확인
+    //    if (!passwordEncoder.matches(password, user.getPassword())) {
+    //        throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+    //    }
+    //
+    //    // 인증 성공 시 JWT 생성 및 쿠키에 저장
+    //    String token = jwtUtil.createToken(user.getUsername(), user.getRole());
+    //    jwtUtil.addJwtToCookie(token, res);
+    //}
 
 
     // 유효성검사 메소드 - 이름

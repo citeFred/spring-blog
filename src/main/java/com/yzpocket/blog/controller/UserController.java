@@ -47,31 +47,32 @@ public class UserController {
         }
     }
 
-    // 로그인 API
-    @PostMapping("/user/login")
-    public ResponseEntity<RestApiException> login(@RequestBody LoginRequestDto requestDto, HttpServletResponse res) {
-        try {
-            String username = requestDto.getUsername();
-            String password = requestDto.getPassword();
-
-            // 아이디와 비밀번호의 유효성 검사 호출 계층을 (Service->Controller로 옮김)
-            if (!userService.isValidUsername(username)) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                        .body(new RestApiException("ID 형태가 부적절합니다.", HttpStatus.BAD_REQUEST.value()));
-            }
-
-            if (!userService.isValidPassword(password)) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                        .body(new RestApiException("PW 형태가 부적절합니다.", HttpStatus.BAD_REQUEST.value()));
-            }
-
-            userService.login(requestDto, res);
-            return ResponseEntity.ok(new RestApiException("로그인 성공", HttpStatus.OK.value()));
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(new RestApiException("로그인 실패", HttpStatus.BAD_REQUEST.value()));
-        }
-    }
+    // 로그인 API // -> Spring Security 활성화로 FormLogin을 통해서 해당 API 필요없어짐
+    //@PostMapping("/user/login")
+    //public ResponseEntity<RestApiException> login(@RequestBody LoginRequestDto requestDto, HttpServletResponse res) {
+    //    try {
+    //        String userId = requestDto.getUserId();
+    //        //String username = requestDto.getUsername();
+    //        String password = requestDto.getPassword();
+    //
+    //        // 아이디와 비밀번호의 유효성 검사 호출 계층을 (Service->Controller로 옮김)
+    //        if (!userService.isValidUsername(userId)) {
+    //            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+    //                    .body(new RestApiException("ID 형태가 부적절합니다.", HttpStatus.BAD_REQUEST.value()));
+    //        }
+    //
+    //        if (!userService.isValidPassword(password)) {
+    //            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+    //                    .body(new RestApiException("PW 형태가 부적절합니다.", HttpStatus.BAD_REQUEST.value()));
+    //        }
+    //
+    //        userService.login(requestDto, res);
+    //        return ResponseEntity.ok(new RestApiException("로그인 성공", HttpStatus.OK.value()));
+    //
+    //    } catch (Exception e) {
+    //        e.printStackTrace();
+    //        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+    //                .body(new RestApiException("로그인 실패", HttpStatus.BAD_REQUEST.value()));
+    //    }
+    //}
 }

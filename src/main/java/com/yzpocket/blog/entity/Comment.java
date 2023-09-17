@@ -33,6 +33,13 @@ public class Comment extends Timestamped{
     @JoinColumn(name = "blog_id", referencedColumnName = "id", insertable = false, updatable = false)
     private Blog blog;
 
+    //Comment:User 관계 N:1
+    //Comment의 blogid 컬럼과 Blog의 id 컬럼을 Join 조건으로 사용
+    //Comment<->User 양방향
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
 
     // 댓글 저장 생성자
     public Comment(CommentRequestDto requestDto, String tokenUsername) { // <- 토큰에서 유저 이름 가져오기

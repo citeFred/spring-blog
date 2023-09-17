@@ -6,6 +6,7 @@ import lombok.Setter;
 @Setter
 @Getter
 public class SignupRequestDto {
+    private String userId;
     private String username;
     private String password;
     private boolean isAdmin = false; //아직미구현

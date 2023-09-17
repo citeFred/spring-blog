@@ -54,7 +54,7 @@ create database blog;
   - <Secret Key> 는 로컬 테스트용으로 임시 적용하고 있습니다. 원하는 난수를 입력해주세요 ex) adsfa19aaAd91
 ```
 #JDBC
-spring.datasource.url=jdbc:mysql://localhost:3306/blog
+spring.datasource.url=jdbc:mysql://localhost:3306/blogasd
 spring.datasource.username=<username>
 spring.datasource.password=<password>
 spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
